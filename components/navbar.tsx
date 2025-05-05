@@ -14,14 +14,14 @@ const Navbar: React.FC = () => {
       <div className="flex items-center space-x-6">
         <div className="text-white font-medium space-x-6">
           <a
-            href="#beranda"
-            className="hover: underline transition-colors duration-200"
+            href="/beranda"
+            className="hover:underline transition-colors duration-200"
           >
             Beranda
           </a>
           <a
-            href="#profil"
-            className="hover: underline transition-colors duration-200:"
+            href="/profil"
+            className="hover:underline transition-colors duration-200"
           >
             Profil
           </a>
