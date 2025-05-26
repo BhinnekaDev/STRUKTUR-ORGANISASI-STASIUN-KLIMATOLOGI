@@ -14,7 +14,7 @@ export default function Footer() {
         />
         <p> </p>
         <p className="font-semibold">STASIUN KLIMATOLOGI</p>
-        <p>Jl. Ir. Rustandi Sugianto P. Balai Bengkulu 39172</p>
+        <p>Jl. Ir. Rustandi Sugianto P. Baai Bengkulu 39172</p>
         <p>0736-51251 / 0736-51426 / 0736-55300</p>
         <p>staklim.pulaubaai@bmkg.go.id</p>
       </div>

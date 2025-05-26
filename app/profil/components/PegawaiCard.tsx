@@ -1,12 +1,5 @@
 import React from "react";
-
-interface PegawaiCardProps {
-  nama: string;
-  nip: string;
-  jabatan: string;
-  periode: string;
-  foto: string;
-}
+import { PegawaiCardProps } from "@/interface/Pegawai";
 
 const PegawaiCard: React.FC<PegawaiCardProps> = ({
   nama,
@@ -16,11 +9,11 @@ const PegawaiCard: React.FC<PegawaiCardProps> = ({
   foto,
 }) => {
   return (
-    <div className="bg-gradient-to-b from-white to-blue-700 rounded-2xl shadow-md p-4 text-center text-white">
+    <div className="w-full h-full bg-gradient-to-b from-[#93B3CF] to-[#0B48A8] rounded-2xl shadow-md px-6 py-10 text-center text-white flex flex-col items-center">
       <img
         src={foto}
         alt={nama}
-        className="w-24 h-28 object-cover rounded-lg mx-auto mb-4"
+        className="w-32 h-36 object-cover rounded-lg mb-4"
       />
       <p className="text-sm">Nama : {nama}</p>
       <p className="text-sm">NIP : {nip}</p>
