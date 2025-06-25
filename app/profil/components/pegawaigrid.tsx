@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import PegawaiCard from "@/app/profil/components/PegawaiCard";
+import PegawaiCard from "@/app/profil/components/pegawaicard";
 import { PegawaiCardProps } from "@/interface/Pegawai";
 
 interface Props {
