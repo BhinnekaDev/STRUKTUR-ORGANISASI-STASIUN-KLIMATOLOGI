@@ -1,7 +1,8 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import Image from "next/image";
 import { IoIosArrowDropupCircle } from "react-icons/io";
 
@@ -9,7 +10,10 @@ export default function IntroAnimation() {
   const [show, setShow] = useState<boolean>(true);
   const router = useRouter();
 
-  const handleDragEnd = (_: any, info: { offset: { y: number } }) => {
+  const handleDragEnd = (
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
     if (info.offset.y < -100) {
       setShow(false);
       setTimeout(() => {

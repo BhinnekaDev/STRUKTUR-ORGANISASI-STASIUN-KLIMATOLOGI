@@ -1,6 +1,7 @@
 export interface PegawaiCardProps {
-  nama: string;
+  id: string;
   nip: string;
+  nama: string;
   jabatan: string;
   periode: string;
   foto: string;

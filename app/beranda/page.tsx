@@ -1,8 +1,14 @@
+"use client"; // ⬅️ tambahkan ini di paling atas!
+
 import React from "react";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/navbar";
-import Konten from "@/app/beranda/konten";
 import Footer from "@/components/footer";
+
+// ⬇️ Import dynamic Konten dengan ssr: false setelah file jadi Client Component
+const Konten = dynamic(() => import("@/app/beranda/konten"), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
