@@ -11,7 +11,7 @@ export default function IntroAnimation() {
   const router = useRouter();
 
   const handleDragEnd = (
-    _: MouseEvent | TouchEvent | PointerEvent,
+    event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
   ) => {
     if (info.offset.y < -100) {
