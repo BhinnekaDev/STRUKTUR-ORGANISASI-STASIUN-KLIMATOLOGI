@@ -1,8 +1,13 @@
+"use client";
+
 import React from "react";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/navbar";
-import Konten from "@/app/beranda/konten";
 import Footer from "@/components/footer";
+
+const Konten = dynamic(() => import("@/app/beranda/konten"), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
