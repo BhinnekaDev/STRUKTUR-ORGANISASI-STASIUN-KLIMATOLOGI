@@ -1,62 +1,76 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-console.log("API Base URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
+const API_BASE_URL = "https://radiant-illumination-production.up.railway.app/";
 
+/**
+ * Interface Jabatan yang digunakan di frontend untuk menampilkan struktur organisasi
+ */
 export interface Jabatan {
   id: string;
   nip: string;
   nama: string;
+  nama_lengkap: string;
   jabatan: string;
-  periode: string;
+  tmt?: string;
   foto: string;
   parent_id: number | null;
+
+  // Informasi tambahan (opsional)
+  no_telepon?: string;
 }
 
+/**
+ * Interface sesuai struktur respons dari endpoint /struktur-organisasi
+ */
 interface StrukturOrganisasiAPIResponse {
   ID_Struktur: string;
-  Periode: string;
   Petugas: string;
-  PetugasDetail: {
-    NIP: string;
-    ID_Jabatan: string;
-    Masa_Bakti: string;
-    Foto_Petugas: string;
-    JabatanDetail: {
-      Nama_Jabatan: string;
-    };
-    Nama_Depan_Petugas: string;
-    Nama_Belakang_Petugas: string;
-    No_Telepon_Petugas: string;
+  tmt?: string;
+  jabatan: string;
+  petugas: {
+    nip: string;
+    nama_lengkap: string;
+    no_telepon?: string;
+    foto_pegawai?: string;
   };
 }
 
+/**
+ * Fungsi untuk fetch dan mapping data struktur organisasi dari API
+ */
 export async function getStrukturOrganisasi(): Promise<Jabatan[]> {
   try {
     const response = await fetch(`${API_BASE_URL}struktur-organisasi`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-    console.log(response);
 
     if (!response.ok) {
-      throw new Error("Gagal mengambil data struktur organisasi");
+      throw new Error(
+        `Gagal mengambil data struktur organisasi: ${response.status}`
+      );
     }
 
     const result: StrukturOrganisasiAPIResponse[] = await response.json();
 
-    const mapped = result.map(
-      (item): Jabatan => ({
-        id: item.ID_Struktur,
-        nip: item.PetugasDetail.NIP,
-        nama: `${item.PetugasDetail.Nama_Depan_Petugas} ${item.PetugasDetail.Nama_Belakang_Petugas}`,
-        jabatan: item.PetugasDetail.JabatanDetail.Nama_Jabatan,
-        periode: item.Periode,
-        foto: item.PetugasDetail.Foto_Petugas,
-        parent_id: null, // Bisa diganti jika API sediakan struktur hierarki
-      })
-    );
+    const mapped: Jabatan[] = result.map((item, index) => ({
+      id: item.ID_Struktur || `${index}`,
+      nip: item.petugas.nip,
+      nama: item.petugas.nama_lengkap,
+      nama_lengkap: item.petugas.nama_lengkap,
+      jabatan: item.jabatan,
+      tmt: item.tmt,
+      foto: item.petugas.foto_pegawai || "/default.jpg",
+      parent_id: null, // Jika API belum support, default null
 
-    console.log("Data struktur organisasi berhasil diambil:", mapped);
+      // Tambahan opsional
+      no_telepon: item.petugas.no_telepon,
+    }));
+
+    console.log("✅ Data struktur organisasi berhasil diambil:", mapped);
     return mapped;
   } catch (error) {
+    console.error("❌ Error saat mengambil struktur organisasi:", error);
     throw new Error(
       (error as Error).message ||
         "Terjadi kesalahan saat mengambil data struktur organisasi"

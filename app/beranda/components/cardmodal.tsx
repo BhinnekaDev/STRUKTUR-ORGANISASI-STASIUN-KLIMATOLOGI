@@ -12,6 +12,18 @@ interface CardModalProps {
   onClose: () => void;
 }
 
+// Fungsi untuk format tanggal
+const formatTanggal = (dateStr?: string): string => {
+  if (!dateStr) return "-";
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return dateStr; // fallback kalau tidak valid
+  return date.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
+
 const CardModal: React.FC<CardModalProps> = ({ pegawai, isOpen, onClose }) => {
   return (
     <AnimatePresence>
@@ -34,6 +46,7 @@ const CardModal: React.FC<CardModalProps> = ({ pegawai, isOpen, onClose }) => {
             <button
               className="absolute top-4 left-4 text-white text-2xl"
               onClick={onClose}
+              aria-label="Tutup modal"
             >
               <IoIosArrowDropleftCircle />
             </button>
@@ -41,8 +54,8 @@ const CardModal: React.FC<CardModalProps> = ({ pegawai, isOpen, onClose }) => {
             {/* Foto */}
             <div className="w-40 h-48 relative mx-auto">
               <Image
-                src={pegawai.foto || "/default.jpg"} // fallback jika foto kosong
-                alt={pegawai.nama}
+                src={pegawai.foto || "/default.jpg"}
+                alt={pegawai.nama_lengkap}
                 fill
                 className="object-cover rounded-lg"
                 priority
@@ -52,7 +65,7 @@ const CardModal: React.FC<CardModalProps> = ({ pegawai, isOpen, onClose }) => {
             {/* Info Pegawai */}
             <div className="flex flex-col justify-center text-left text-sm sm:text-base">
               <p>
-                <strong>Nama:</strong> {pegawai.nama}
+                <strong>Nama:</strong> {pegawai.nama_lengkap}
               </p>
               <p>
                 <strong>NIP:</strong> {pegawai.nip}
@@ -60,9 +73,11 @@ const CardModal: React.FC<CardModalProps> = ({ pegawai, isOpen, onClose }) => {
               <p>
                 <strong>Jabatan:</strong> {pegawai.jabatan}
               </p>
-              <p>
-                <strong>Periode:</strong> {pegawai.periode}
-              </p>
+              {pegawai.tmt && (
+                <p>
+                  <strong>TMT:</strong> {formatTanggal(pegawai.tmt)}
+                </p>
+              )}
             </div>
           </motion.div>
         </motion.div>
