@@ -104,7 +104,7 @@ MIT © 2025 [Bhinneka Dev](https://github.com/BhinnekaDev)
 ---
 
 <p align="center">
-  <img alt="Cuplikan Struktur Organisasi" src="https://github.com/user-attachments/assets/struktur-sample.png" width="80%" />
+  <img alt="Cuplikan Struktur Organisasi" src="https://github.com/user-attachments/assets/945a8d58-d7ef-4733-be63-f0d8b0bde5aa" width="80%" />
 </p>
 
 <p align="center"><sub>Bhinneka Developer © 2025</sub></p>
