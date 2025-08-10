@@ -13,22 +13,23 @@ export default function Konten() {
   const [data, setData] = useState<Jabatan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const [selectedPegawai, setSelectedPegawai] = useState<Jabatan | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getStrukturOrganisasi();
-        setData(result);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async (): Promise<void> => {
+    setLoading(true);
+    try {
+      const result = await getStrukturOrganisasi();
+      setData(result);
+      setError(null);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -42,8 +43,10 @@ export default function Konten() {
     setSelectedPegawai(null);
   };
 
-  const findByJabatan = (jabatan: string) =>
-    data.find((item) => item.jabatan.toLowerCase() === jabatan.toLowerCase());
+  const findByJabatan = (jabatan: string): Jabatan | undefined => {
+    const normalize = (s: string) => s.trim().toLowerCase();
+    return data.find((item) => normalize(item.jabatan) === normalize(jabatan));
+  };
 
   if (loading) {
     return (
@@ -85,82 +88,85 @@ export default function Konten() {
         >
           <StrukturCard
             pejabat={findByJabatan("Kepala Stasiun")}
-            onClick={() => handleCardClick(findByJabatan("Kepala Stasiun")!)}
+            onClick={() => {
+              const pegawai = findByJabatan("Kepala Stasiun");
+              if (pegawai) handleCardClick(pegawai);
+            }}
           />
         </motion.div>
 
-        {/* Garis Vertikal */}
-        <div className="h-32 w-1 bg-white" />
+        {/* Garis Model "T" */}
+        <div className="relative flex items-center justify-center h-20 w-full">
+          {/* Garis vertikal dari Kepala Stasiun */}
+          <div className="absolute top-0 h-10 w-1 bg-white" />
 
-        {/* Kepala Sub-bagian TU */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <StrukturCard
-            pejabat={findByJabatan("Kepala Sub-bagian Tata Usaha")}
-            onClick={() =>
-              handleCardClick(findByJabatan("Kepala Sub-bagian Tata Usaha")!)
-            }
-          />
-        </motion.div>
+          {/* Garis horizontal */}
+          <div className="absolute top-10 h-1 w-[55%] bg-white" />
 
-        {/* Garis Vertikal */}
-        <div className="h-32 w-1 bg-white" />
+          {/* Garis vertikal turun ke masing-masing anak */}
+          <div className="absolute top-10 left-[22.5%] h-20 w-1 bg-white" />
+          <div className="absolute top-10 left-1/2 transform -translate-x-1/2 h-20 w-1 bg-white" />
+          <div className="absolute top-10 right-[22.5%] h-20 w-1 bg-white" />
+        </div>
 
-        {/* Seksi-seksi */}
-        <div className="w-full flex flex-col md:flex-row items-center justify-center px-10">
-          {/* Seksi Pengamatan */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="relative flex items-center"
-          >
-            <StrukturCard
-              pejabat={findByJabatan("Seksi Pengamatan Klimatologi")}
-              onClick={() =>
-                handleCardClick(findByJabatan("Seksi Pengamatan Klimatologi")!)
-              }
-            />
-            {/* Garis ke kanan */}
-            <div className="hidden md:block w-32 h-1 bg-white" />
-          </motion.div>
+        {/* Struktur bawah sejajar dengan garis */}
+        <div className="relative w-full h-[220px] md:h-[250px] mt-10">
+          {/* Tata Usaha */}
+          <div className="absolute top-0 left-[15%]">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <StrukturCard
+                pejabat={findByJabatan("Kepala Sub-bagian Tata Usaha")}
+                onClick={() => {
+                  const pegawai = findByJabatan("Kepala Sub-bagian Tata Usaha");
+                  if (pegawai) handleCardClick(pegawai);
+                }}
+              />
+            </motion.div>
+          </div>
 
-          {/* Seksi Analisis */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative flex items-center"
-          >
-            <StrukturCard
-              pejabat={findByJabatan("Seksi Analisis Data Klimatologi")}
-              onClick={() =>
-                handleCardClick(
-                  findByJabatan("Seksi Analisis Data Klimatologi")!
-                )
-              }
-            />
-            {/* Garis ke kanan */}
-            <div className="hidden md:block w-32 h-1 bg-white" />
-          </motion.div>
+          {/* Observasi */}
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <StrukturCard
+                pejabat={findByJabatan("Sub Koordinator Bidang Observasi")}
+                onClick={() => {
+                  const pegawai = findByJabatan(
+                    "Sub Koordinator Bidang Observasi"
+                  );
+                  if (pegawai) handleCardClick(pegawai);
+                }}
+              />
+            </motion.div>
+          </div>
 
-          {/* Seksi Informasi */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="relative flex items-center"
-          >
-            <StrukturCard
-              pejabat={findByJabatan("Seksi Informasi Iklim")}
-              onClick={() =>
-                handleCardClick(findByJabatan("Seksi Informasi Iklim")!)
-              }
-            />
-          </motion.div>
+          {/* Data & Informasi */}
+          <div className="absolute top-0 right-[15%]">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              <StrukturCard
+                pejabat={findByJabatan(
+                  "Sub Koordinator Bidang Data dan Informasi"
+                )}
+                onClick={() => {
+                  const pegawai = findByJabatan(
+                    "Sub Koordinator Bidang Data dan Informasi"
+                  );
+                  if (pegawai) handleCardClick(pegawai);
+                }}
+              />
+            </motion.div>
+          </div>
         </div>
       </div>
 
