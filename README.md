@@ -23,7 +23,7 @@
 
 ## 🌐 Demo <a id="demo"></a>
 
-Coba langsung: **[https://struktur-stasiun-klimatologi.vercel.app/](https://struktur-stasiun-klimatologi.vercel.app/)** (hosted on Vercel)
+Coba langsung: **[https://struktur-organisasi-stasiun-klimato-lake.vercel.app//](https://struktur-organisasi-stasiun-klimato-lake.vercel.app//)** (hosted on Vercel)
 
 ---
 
@@ -65,7 +65,7 @@ $ npm install
 Buat file **`.env`** (jika ada konfigurasi env):
 
 ```env
-NEXT_PUBLIC_API_URL=https://api.kamu.com/api
+NEXT_PUBLIC_API_BASE_URL_KLIMATOLOGI=https://api.kamu.com/api
 ```
 
 Jalankan mode development:

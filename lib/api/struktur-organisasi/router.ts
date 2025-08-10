@@ -31,7 +31,7 @@ interface StrukturOrganisasiAPIResponse {
     };
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL as string;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL_KLIMATOLOGI as string;
 
 /**
  * Fungsi untuk fetch dan mapping data struktur organisasi dari API
